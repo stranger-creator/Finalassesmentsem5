@@ -7,6 +7,9 @@ import Title from '../../components/Title/Title';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { EMAIL } from '../../constants/patterns';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'; // Import signInWithPopup and GoogleAuthProvider
+import { auth } from '../Firebase/Firebase';
+
 export default function LoginPage() {
   const {
     handleSubmit,
@@ -20,13 +23,25 @@ export default function LoginPage() {
   const returnUrl = params.get('returnUrl');
 
   useEffect(() => {
-    if (!user) return;
-
-    returnUrl ? navigate(returnUrl) : navigate('/');
-  }, [user]);
+    if (user) {
+      // If the user is authenticated, navigate them to the home page or the returnUrl if provided
+      navigate(returnUrl || '/home');
+    }
+  }, [user, navigate, returnUrl]);
 
   const submit = async ({ email, password }) => {
     await login(email, password);
+  };
+
+  // Function to handle sign-in with Google
+  const handleSignInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate('/cart')
+    } catch (error) {
+      console.error('Error signing in with Google:', error);
+    }
   };
 
   return (
@@ -52,8 +67,10 @@ export default function LoginPage() {
             })}
             error={errors.password}
           />
-
           <Button type="submit" text="Login" />
+          
+          {/* Button to sign in with Google */}
+          <Button onClick={handleSignInWithGoogle} text="Sign in with Google" />
 
           <div className={classes.register}>
             New user? &nbsp;
@@ -66,3 +83,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

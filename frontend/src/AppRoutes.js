@@ -17,7 +17,7 @@ import FoodsAdminPage from './pages/FoodsAdmin/FoodsAdminPage';
 import FoodEditPage from './pages/FoodEdit/FoodEditPage';
 import UsersPage from './pages/UsersPage/UsersPage';
 import UserEditPage from './pages/UserEdit/UserEditPage';
-
+import FoodWeather from './components/weather/weather';
 export default function AppRoutes() {
   return (
     <Routes>
@@ -28,6 +28,7 @@ export default function AppRoutes() {
       <Route path="/cart" element={<CartPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/weather" element={<FoodWeather />} />
       <Route
         path="/checkout"
         element={
